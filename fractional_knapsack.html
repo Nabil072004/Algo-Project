@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Fractional Knapsack</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">GREEDY ALGORITHM</div>
+  <h1>Fractional Knapsack</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have items with a value and a weight, and a bag with limited capacity. We want the maximum total value. Items can be broken, so taking a fraction of an item is allowed. The greedy choice: always take the item with the highest value per unit weight first.</p>
+      <span class="tag">Time O(n log n) (sorting) · Space O(n)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Calculate the ratio value / weight for every item.</li>
+        <li>Sort the items by this ratio, highest first.</li>
+        <li>Go through the items in that order. If the whole item fits, take it all and reduce the remaining capacity.</li>
+        <li>If it does not fit, take only the fraction that fits (remaining capacity / weight) and stop.</li>
+        <li>Add the value of everything taken. This is the maximum value.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <img src="img/fractional_knapsack.png" width="640" alt="Fractional knapsack C++ code">
+
+</body>
+</html>
