@@ -33,6 +33,18 @@
       color: #ff5a1f;
       padding: 4px 8px;
     }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
   </style>
 </head>
 
@@ -61,7 +73,10 @@
   </div>
 
   <h4><b>03</b> / SAMPLE C++ CODE</h4>
-  <img src="img/fractional_knapsack.png" width="640" alt="Fractional knapsack C++ code">
+  <div class="code">
+    <img src="img/PWRatio_1.png" alt="Fractional knapsack C++ code (part 1)">
+    <img src="img/PWRatio_2.png" alt="Fractional knapsack C++ code (part 2)">
+  </div>
 
 </body>
 </html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Activity Selection</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">GREEDY ALGORITHM</div>
+  <h1>Activity Selection</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have a list of activities, each with a start time and an end time. One person can do only one activity at a time, so the chosen activities must not overlap. We want to select the maximum number of activities. The greedy choice: always pick the activity that finishes first, so the most time is left for the others.</p>
+      <span class="tag">Time O(n log n) (sorting) · Space O(n)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Sort all activities by end time, earliest first.</li>
+        <li>Select the first activity (it ends earliest) and remember its end time.</li>
+        <li>Go through the remaining activities in order. If an activity starts at or after the last selected end time, select it and update the last end time.</li>
+        <li>If it starts before the last selected activity ends, skip it.</li>
+        <li>Count the selected activities. This is the maximum number.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/ActivitySelection_1.png" alt="Activity selection C++ code (part 1)">
+    <img src="img/ActivitySelection_2.png" alt="Activity selection C++ code (part 2)">
+  </div>
+
+</body>
+</html>
