@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Coin Change: Total Combinations</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">DYNAMIC PROGRAMMING</div>
+  <h1>Coin Change: Total Combinations</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have coins of different values (each coin can be used any number of times) and an amount. We want to count in how many different ways the amount can be made. The order of the coins does not matter, so 1 + 2 and 2 + 1 count as one way.</p>
+      <span class="tag">Time O(n × amount) · Space O(n × amount)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Make a table dp with n + 1 rows (coins) and amount + 1 columns, filled with 0. Set column 0 to 1, because there is exactly one way to make the sum 0 (take no coins).</li>
+        <li>For every coin i and every sum j, check if the coin value is less than or equal to j.</li>
+        <li>If it fits, dp[i][j] = ways without this coin (dp[i-1][j]) + ways using this coin (dp[i][j - coin]).</li>
+        <li>If it does not fit, copy the value from the row above: dp[i][j] = dp[i-1][j].</li>
+        <li>The last cell dp[n][amount] is the total number of combinations. If it is 0, the amount is not possible.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/TotalNumberOfCombinations_1.png" alt="Total number of coin combinations C++ code (part 1)">
+    <img src="img/TotalNumberOfCombinations_2.png" alt="Total number of coin combinations C++ code (part 2)">
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Longest Common Subsequence</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">DYNAMIC PROGRAMMING</div>
+  <h1>Longest Common Subsequence</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have two strings. A subsequence is made by deleting some characters without changing the order of the rest. We want the longest subsequence that appears in both strings. We store the answer for every pair of prefixes of the two strings in a table.</p>
+      <span class="tag">Time O(n × m) · Space O(n × m)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Make a table dp with n + 1 rows and m + 1 columns, filled with 0 (n and m are the lengths of the two strings).</li>
+        <li>For every i and j, compare X[i-1] and Y[j-1].</li>
+        <li>If the characters are equal, dp[i][j] = 1 + dp[i-1][j-1].</li>
+        <li>If they are different, dp[i][j] = the bigger of dp[i-1][j] and dp[i][j-1].</li>
+        <li>The last cell dp[n][m] is the length of the LCS.</li>
+        <li>To get the LCS itself, start from the last cell. If the characters are equal, add that character to the front and move diagonally. Otherwise move to the bigger neighbour (up or left).</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/LCS_1.png" alt="LCS C++ code (part 1)">
+    <img src="img/LCS_2.png" alt="LCS C++ code (part 2)">
+  </div>
+
+</body>
+</html>

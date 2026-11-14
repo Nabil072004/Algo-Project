@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Coin Change: Minimum Coins</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">DYNAMIC PROGRAMMING</div>
+  <h1>Coin Change: Minimum Coins</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have coins of different values (each coin can be used any number of times) and an amount. We want to make the amount using the fewest coins. If the amount cannot be made with the given coins, the answer is not possible.</p>
+      <span class="tag">Time O(n × amount) · Space O(n × amount)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Make a table dp with n + 1 rows (coins) and amount + 1 columns, filled with a very big number (it means not possible yet). Set column 0 to 0, because 0 coins make the sum 0.</li>
+        <li>For every coin i and every sum j, check if the coin value is less than or equal to j.</li>
+        <li>If it fits, dp[i][j] = the smaller of not using the coin (dp[i-1][j]) and using it (1 + dp[i][j - coin]).</li>
+        <li>If it does not fit, copy the value from the row above: dp[i][j] = dp[i-1][j].</li>
+        <li>If the last cell dp[n][amount] is still the very big number, the amount is not possible. Otherwise it is the minimum number of coins.</li>
+        <li>To find the coins, start from the last cell. If dp[i][a] is equal to dp[i-1][a], move up. Otherwise the coin was used, so subtract its value from a and stay in the same row.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/MinimumNumberOfCoins_1.png" alt="Minimum number of coins C++ code (part 1)">
+    <img src="img/MinimumNumberOfCoins_2.png" alt="Minimum number of coins C++ code (part 2)">
+  </div>
+
+</body>
+</html>

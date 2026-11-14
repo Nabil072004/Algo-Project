@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>0/1 Knapsack</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">DYNAMIC PROGRAMMING</div>
+  <h1>0/1 Knapsack</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have items with a profit and a weight, and a bag with limited capacity. We want the maximum total profit. Each item is either taken completely or left out, so breaking an item is not allowed. The greedy choice does not always work here, so we solve smaller problems first and store their answers in a table.</p>
+      <span class="tag">Time O(n × capacity) · Space O(n × capacity)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Make a table ks with n + 1 rows (items) and capacity + 1 columns, filled with 0.</li>
+        <li>For every item i and every capacity c, check if the weight of the item is less than or equal to c.</li>
+        <li>If it fits, ks[i][c] = the bigger of leaving it (ks[i-1][c]) and taking it (profit + ks[i-1][c - weight]).</li>
+        <li>If it does not fit, copy the value from the row above: ks[i][c] = ks[i-1][c].</li>
+        <li>The last cell ks[n][capacity] is the maximum profit.</li>
+        <li>To find the items, start from the last cell and go up. If ks[i][c] is different from ks[i-1][c], item i was taken, so reduce c by its weight.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/01Knapsack_1.png" alt="0/1 knapsack C++ code (part 1)">
+    <img src="img/01Knapsack_2.png" alt="0/1 knapsack C++ code (part 2)">
+  </div>
+
+</body>
+</html>
