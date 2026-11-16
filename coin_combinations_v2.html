@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Coin Change: Total Combinations</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+
+    /* Test section */
+    input { font-family: Consolas, monospace; padding: 6px; border: 1px solid #1c1b19; }
+    button {
+      background: #ff5a1f;
+      border: 1px solid #1c1b19;
+      box-shadow: 3px 3px 0 #1c1b19;
+      padding: 8px 20px;
+      cursor: pointer;
+    }
+    #result { overflow-x: auto; }
+    table { border-collapse: collapse; margin: 16px 0; }
+    td, th { border: 1px solid #1c1b19; padding: 5px 10px; text-align: center; }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">DYNAMIC PROGRAMMING</div>
+  <h1>Coin Change: Total Combinations</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have coins of different values (each coin can be used any number of times) and an amount. We want to count in how many different ways the amount can be made. The order of the coins does not matter, so 1 + 2 and 2 + 1 count as one way.</p>
+      <span class="tag">Time O(n × amount) · Space O(n × amount)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Make a table dp with n + 1 rows (coins) and amount + 1 columns, filled with 0. Set column 0 to 1, because there is exactly one way to make the sum 0 (take no coins).</li>
+        <li>For every coin i and every sum j, check if the coin value is less than or equal to j.</li>
+        <li>If it fits, dp[i][j] = ways without this coin (dp[i-1][j]) + ways using this coin (dp[i][j - coin]).</li>
+        <li>If it does not fit, copy the value from the row above: dp[i][j] = dp[i-1][j].</li>
+        <li>The last cell dp[n][amount] is the total number of combinations. If it is 0, the amount is not possible.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/TotalNumberOfCombinations_1.png" alt="Total number of coin combinations C++ code (part 1)">
+    <img src="img/TotalNumberOfCombinations_2.png" alt="Total number of coin combinations C++ code (part 2)">
+  </div>
+
+  <h4><b>04</b> / TEST THE ALGORITHM</h4>
+
+  <!-- 1. Take the input -->
+  Coins (separate with spaces, up to 6): <input id="coins" value="1 2 5"><br><br>
+  Amount (1 to 40): <input id="amount" value="5"><br><br>
+  <button onclick="run()">Run</button>
+
+  <!-- 3. The answer will be written here -->
+  <div id="result"></div>
+
+  <!-- 2. The algorithm (same steps as the C++ code) -->
+  <script>
+    // "1 3 5" becomes [1, 3, 5]
+    function read(id) {
+      var text = document.getElementById(id).value.trim();
+      if (text == "") return [];
+      return text.split(/\s+/).map(Number);
+    }
+
+    function run() {
+      var coin = read("coins");
+      var amount = Number(document.getElementById("amount").value);
+      var n = coin.length;
+      var result = document.getElementById("result");
+
+      // check the input
+      var ok = n > 0 && n <= 6 && amount >= 1 && amount <= 40 && amount == Math.floor(amount);
+      for (var i = 0; i < n; i++) {
+        if (!(coin[i] >= 1) || coin[i] != Math.floor(coin[i])) ok = false;
+      }
+      if (!ok) {
+        result.innerHTML = "<p>Please enter 1 to 6 coins (whole numbers, 1 or more) and an amount from 1 to 40.</p>";
+        return;
+      }
+
+      // step 1: make the table dp, filled with 0, and column 0 = 1
+      var dp = [];
+      for (var i = 0; i <= n; i++) {
+        dp[i] = [];
+        for (var j = 0; j <= amount; j++) dp[i][j] = 0;
+        dp[i][0] = 1;
+      }
+
+      // steps 2-4: fill the table
+      for (var i = 1; i <= n; i++) {
+        for (var j = 1; j <= amount; j++) {
+          if (coin[i-1] <= j) dp[i][j] = dp[i-1][j] + dp[i][j - coin[i-1]];
+          else dp[i][j] = dp[i-1][j];
+        }
+      }
+
+      // write the table and the answer on the page
+      var html = "<table><tr><th></th>";
+      for (var j = 0; j <= amount; j++) html += "<th>" + j + "</th>";
+      html += "</tr>";
+      for (var i = 0; i <= n; i++) {
+        html += "<tr><th>" + (i == 0 ? "no coins" : "coin " + coin[i-1]) + "</th>";
+        for (var j = 0; j <= amount; j++) html += "<td>" + dp[i][j] + "</td>";
+        html += "</tr>";
+      }
+      html += "</table>";
+
+      // step 5: the answer
+      html += "<p>Total combinations = <b>" + dp[n][amount] + "</b></p>";
+      result.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>
