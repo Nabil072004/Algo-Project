@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Fractional Knapsack</title>
+  <style>
+    body {
+      background: #f5f1ea;
+      font-family: Georgia, serif;
+      color: #1c1b19;
+      width: 900px;
+      margin: 30px auto;
+    }
+
+    /* Small monospace texts */
+    .label, h4, .tag {
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    /* Orange parts */
+    .label, h4 b, li::marker { color: #ff5a1f; }
+
+    /* Definition and Steps sit side by side */
+    .row {
+      display: flex;
+      gap: 40px;
+    }
+    .row div { flex: 1; }
+
+    .tag {
+      background: #ffe3d6;
+      color: #ff5a1f;
+      padding: 4px 8px;
+    }
+
+    /* The two code images sit side by side */
+    .code {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .code img {
+      flex: 1;
+      min-width: 0;
+      height: auto;
+    }
+
+    /* Test section */
+    input { font-family: Consolas, monospace; padding: 6px; border: 1px solid #1c1b19; }
+    button {
+      background: #ff5a1f;
+      border: 1px solid #1c1b19;
+      box-shadow: 3px 3px 0 #1c1b19;
+      padding: 8px 20px;
+      cursor: pointer;
+    }
+    #result { overflow-x: auto; }
+    table { border-collapse: collapse; margin: 16px 0; }
+    td, th { border: 1px solid #1c1b19; padding: 5px 10px; text-align: center; }
+  </style>
+</head>
+
+<body>
+
+  <div class="label">GREEDY ALGORITHM</div>
+  <h1>Fractional Knapsack</h1>
+
+  <div class="row">
+    <div>
+      <h4><b>01</b> / DEFINITION</h4>
+      <p>We have items with a value and a weight, and a bag with limited capacity. We want the maximum total value. Items can be broken, so taking a fraction of an item is allowed. The greedy choice: always take the item with the highest value per unit weight first.</p>
+      <span class="tag">Time O(n log n) (sorting) · Space O(n)</span>
+    </div>
+
+    <div>
+      <h4><b>02</b> / STEPS</h4>
+      <ol>
+        <li>Calculate the ratio value / weight for every item.</li>
+        <li>Sort the items by this ratio, highest first.</li>
+        <li>Go through the items in that order. If the whole item fits, take it all and reduce the remaining capacity.</li>
+        <li>If it does not fit, take only the fraction that fits (remaining capacity / weight) and stop.</li>
+        <li>Add the value of everything taken. This is the maximum value.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h4><b>03</b> / SAMPLE C++ CODE</h4>
+  <div class="code">
+    <img src="img/PWRatio_1.png" alt="Fractional knapsack C++ code (part 1)">
+    <img src="img/PWRatio_2.png" alt="Fractional knapsack C++ code (part 2)">
+  </div>
+
+  <h4><b>04</b> / TEST THE ALGORITHM</h4>
+
+  <!-- 1. Take the input -->
+  Values (separate with spaces): <input id="v" value="60 100 120"><br><br>
+  Weights: <input id="w" value="10 20 30"><br><br>
+  Capacity: <input id="cap" value="50"><br><br>
+  <button onclick="run()">Run</button>
+
+  <!-- 3. The answer will be written here -->
+  <div id="result"></div>
+
+  <!-- 2. The algorithm (same steps as the C++ code) -->
+  <script>
+    // "1 3 5" becomes [1, 3, 5]
+    function read(id) {
+      var text = document.getElementById(id).value.trim();
+      if (text == "") return [];
+      return text.split(/\s+/).map(Number);
+    }
+
+    // 66.6666 becomes 66.67
+    function r(x) { return Math.round(x * 100) / 100; }
+
+    function run() {
+      var v = read("v");
+      var w = read("w");
+      var cap = Number(document.getElementById("cap").value);
+      var n = v.length;
+      var result = document.getElementById("result");
+
+      // check the input
+      var ok = n > 0 && n == w.length && cap > 0;
+      for (var i = 0; i < n; i++) {
+        if (isNaN(v[i]) || !(w[i] > 0)) ok = false;
+      }
+      if (!ok) {
+        result.innerHTML = "<p>Please enter the same number of values and weights (weights above 0) and a capacity above 0.</p>";
+        return;
+      }
+
+      // steps 1-2: sort the items by value / weight, highest first
+      var order = [];
+      for (var i = 0; i < n; i++) order.push(i);
+      order.sort(function(a, b) { return v[b] / w[b] - v[a] / w[a]; });
+
+      // steps 3-5: take the items one by one
+      var left = cap;
+      var total = 0;
+      var html = "<table><tr><th>Item</th><th>Value</th><th>Weight</th><th>Value / Weight</th>";
+      html += "<th>Fraction taken</th><th>Value added</th><th>Capacity left</th></tr>";
+      for (var k = 0; k < n; k++) {
+        var i = order[k];
+        var take = Math.min(1, left / w[i]);     // 1 = the whole item, less than 1 = a part of it
+        left = left - take * w[i];
+        total = total + take * v[i];
+        html += "<tr><td>" + (i + 1) + "</td><td>" + v[i] + "</td><td>" + w[i] + "</td><td>" + r(v[i] / w[i]) + "</td>";
+        html += "<td>" + r(take) + "</td><td>" + r(take * v[i]) + "</td><td>" + r(left) + "</td></tr>";
+      }
+      html += "</table>";
+      html += "<p>Maximum value = <b>" + r(total) + "</b></p>";
+      result.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>
